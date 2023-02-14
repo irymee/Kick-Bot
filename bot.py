@@ -37,8 +37,26 @@ async def set_time(_, message: Message):
         # Handle any errors that occur
         await message.reply_text("Error: Invalid command syntax.")
 
+# Define command for adding members to the whitelist
+@bot.on_message(filters.command("addtowhitelist") & filters.private & is_admin)
+async def add_to_whitelist(_, message: Message):
+    try:
+        # Parse the user ID from the message text
+        user_id = int(message.text.split()[1])
+        # Store the user ID in the database
+        col.update_one({"_id": "whitelist"}, {"$addToSet": {"user_ids": user_id}}, upsert=True)
+        # Send a confirmation message
+        await message.reply_text(f"User {user_id} added to whitelist.")
+    except:
+        # Handle any errors that occur
+        await message.reply_text("Error: Invalid command syntax.")
+
 # Define function for kicking members
 async def kick_member(chat_id, user_id):
+    # Check if the user is whitelisted
+    whitelist = col.find_one({"_id": "whitelist"})
+    if whitelist and user_id in whitelist["user_ids"]:
+        return # Do not kick whitelisted members
     await app.kick_chat_member(chat_id, user_id)
 
 # Define handler for new members joining a chat
