@@ -16,8 +16,15 @@ api_hash = os.environ.get("API_HASH")
 bot_token = os.environ.get("BOT_TOKEN")
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
+# Define filter for group admins
+def is_admin(_, __, update):
+    chat_id = update.chat.id
+    user_id = update.from_user.id
+    member = app.get_chat_member(chat_id, user_id)
+    return member.status in ("creator", "administrator")
+
 # Define command for setting the kick time
-@bot.on_message(filters.command("settime") & filters.private)
+@bot.on_message(filters.command("settime") & filters.private & is_admin)
 async def set_time(_, message: Message):
     try:
         # Parse the time from the message text
