@@ -16,7 +16,7 @@ col = db["mycollection"]
 api_id = os.environ.get("API_ID")
 api_hash = os.environ.get("API_HASH")
 bot_token = os.environ.get("BOT_TOKEN")
-app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+bot = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
 
 # Initialize aiohttp web app
 async def hello(request):
@@ -33,7 +33,7 @@ def is_admin(_, __, update):
     return member.status in ("creator", "administrator")
 
 # Define command for setting the kick time
-@bot.on_message(filters.command("settime") & filters.private & is_admin)
+@Client.on_message(filters.command("settime") & filters.private & is_admin)
 async def set_time(_, message: Message):
     try:
         # Parse the time from the message text
@@ -50,7 +50,7 @@ async def set_time(_, message: Message):
 col.update_one({"_id": "kick_time"}, {"$set": {"time": 2592000}}, upsert=True)
 
 # Define command for adding members to the whitelist
-@bot.on_message(filters.command("addtowhitelist") & filters.private & is_admin)
+@Client.on_message(filters.command("addtowhitelist") & filters.private & is_admin)
 async def add_to_whitelist(_, message: Message):
     try:
         # Parse the user ID from the message text
@@ -72,7 +72,7 @@ async def kick_member(chat_id, user_id):
     await app.kick_chat_member(chat_id, user_id)
 
 # Define handler for new members joining a chat
-@bot.on_chat_member_updated()
+@Client.on_chat_member_updated()
 async def on_chat_member_updated(_, update):
     chat_id = update.chat.id
     user_id = update.new_chat_member.user.id
@@ -86,4 +86,4 @@ async def on_chat_member_updated(_, update):
     app.scheduler.enqueue_in(kick_time, kick_member, chat_id, user_id)
 
 # Start the bot
-app.run()
+bot.run()
