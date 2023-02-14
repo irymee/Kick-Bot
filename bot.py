@@ -3,6 +3,8 @@ import pymongo
 from pymongo import MongoClient
 from pyrogram import Client, filters
 from pyrogram.types import Message
+import aiohttp
+from aiohttp import web
 
 # Connect to MongoDB
 mongo_url = os.environ.get("MONGO_URL")
@@ -15,6 +17,13 @@ api_id = os.environ.get("API_ID")
 api_hash = os.environ.get("API_HASH")
 bot_token = os.environ.get("BOT_TOKEN")
 app = Client("my_bot", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+
+# Initialize aiohttp web app
+async def hello(request):
+    return web.Response(text="Hello, world!")
+
+web_app = web.Application()
+web_app.add_routes([web.get('/hello', hello)])
 
 # Define filter for group admins
 def is_admin(_, __, update):
