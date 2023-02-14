@@ -37,6 +37,9 @@ async def set_time(_, message: Message):
         # Handle any errors that occur
         await message.reply_text("Error: Invalid command syntax.")
 
+# Set default kick time to 30 days (2592000 seconds)
+col.update_one({"_id": "kick_time"}, {"$set": {"time": 2592000}}, upsert=True)
+
 # Define command for adding members to the whitelist
 @bot.on_message(filters.command("addtowhitelist") & filters.private & is_admin)
 async def add_to_whitelist(_, message: Message):
@@ -69,7 +72,7 @@ async def on_chat_member_updated(_, update):
     if kick_time:
         kick_time = kick_time["time"]
     else:
-        kick_time = 60 # default kick time is 60 seconds
+        kick_time = 2592000 # default kick time is 30 days (2592000 seconds)
     # Schedule the member to be kicked after the specified time
     app.scheduler.enqueue_in(kick_time, kick_member, chat_id, user_id)
 
