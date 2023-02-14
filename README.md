@@ -1,7 +1,6 @@
-<h1>Pyrogram Bot with MongoDB</h1>
+<h1>Pyrogram Auto Kick Bot with MongoDB</h1>
 
-<p>This is a Pyrogram bot that can kick members from groups and channels after a given time. The kick time can be configured through a bot command, and the default kick time is 30 days. The bot is also designed to only allow group admins to execute its commands, and it includes a whitelist feature so that certain members can be exempted from being kicked.</p>
-
+<p>This Pyrogram bot kicks members from groups and channels after a specified time (default 30 days), with customizable kick time through a bot command. Only group admins can use its commands, and it has a whitelist feature to exempt certain members.</p2>
 <h2>Setup</h2>
 
 <ol>
