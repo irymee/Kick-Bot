@@ -6,14 +6,14 @@
 
 <ol>
   <li>Clone this repository:<br>
-    <code>git clone https://github.com/yourusername/yourrepository.git</code></li>
+    <code>git clone https://github.com/i-ryme/Kick-Bot.git</code></li>
 
   <li>Install the required Python packages:<br>
     <code>pip install -r requirements.txt</code></li>
 
   <li>Set the following environment variables with your Telegram bot API key and MongoDB connection string:<br>
-    <code>export BOT_TOKEN="your_bot_token_here"</code><br>
-    <code>export MONGO_URL="your_mongodb_url_here"</code></li>
+    <code>BOT_TOKEN="your_bot_token_here"</code><br>
+    <code>MONGO_URL="your_mongodb_url_here"</code></li>
 </ol>
 
 <h2>Usage</h2>
